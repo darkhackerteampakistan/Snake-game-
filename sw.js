@@ -1,4 +1,4 @@
-const CACHE_NAME = 'snake-v7';
+const CACHE_NAME = 'snake-v8';   // ← v7 থেকে v8
 
 const ASSETS = [
   './',
