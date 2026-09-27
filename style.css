@@ -1,131 +1,197 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
-}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 
 body {
-  background: #1a1a1a;
-  font-family: 'Courier New', monospace;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  overflow: hidden;
-  touch-action: none;
+  background:#111;
+  font-family:'Courier New', monospace;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  padding:15px;
+  color:#9bbc0f;
+  touch-action:manipulation;
 }
 
-.phone {
-  background: #2a2a2a;
-  padding: 20px;
-  border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.8);
-  border: 3px solid #444;
+.app {
+  width:100%;
+  max-width:360px;
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
+
+.screen { display:flex; flex-direction:column; gap:12px; align-items:center; }
+.hidden { display:none !important; }
+
+/* ===== মেনু ===== */
+.logo {
+  font-size:48px;
+  letter-spacing:6px;
+  color:#9bbc0f;
+  text-shadow:0 0 20px #9bbc0f88;
+  margin-top:20px;
+}
+.subtitle {
+  font-size:13px;
+  color:#6b8a0a;
+  letter-spacing:3px;
+  margin-bottom:20px;
+}
+.title { font-size:22px; letter-spacing:3px; margin:10px 0; }
+
+.menu-btn {
+  width:100%;
+  background:transparent;
+  border:2px solid #9bbc0f;
+  color:#9bbc0f;
+  padding:14px;
+  font-family:inherit;
+  font-size:16px;
+  letter-spacing:2px;
+  border-radius:8px;
+  cursor:pointer;
+  transition:all .15s;
+}
+.menu-btn:active { background:#9bbc0f; color:#0f380f; transform:scale(.97); }
+
+/* ===== কাস্টমাইজ ===== */
+.section {
+  width:100%;
+  background:#1a1a1a;
+  border:1px solid #333;
+  border-radius:8px;
+  padding:10px;
+}
+.section label {
+  display:block;
+  font-size:12px;
+  letter-spacing:2px;
+  color:#9bbc0f;
+  margin-bottom:8px;
+}
+.row { display:flex; flex-wrap:wrap; gap:6px; }
+
+.swatch {
+  width:34px; height:34px;
+  border-radius:6px;
+  border:2px solid #444;
+  cursor:pointer;
+  transition:transform .1s;
+}
+.swatch.active { border-color:#9bbc0f; transform:scale(1.1); box-shadow:0 0 10px #9bbc0f; }
+
+.chip {
+  background:#222;
+  color:#9bbc0f;
+  border:1px solid #444;
+  padding:6px 12px;
+  font-family:inherit;
+  font-size:12px;
+  letter-spacing:1px;
+  border-radius:6px;
+  cursor:pointer;
+}
+.chip.active { background:#9bbc0f; color:#0f380f; border-color:#9bbc0f; }
+
+/* ===== গেম ===== */
+.hud {
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+  font-size:14px;
+  letter-spacing:2px;
+  padding:0 4px;
 }
 
 .screen-frame {
-  background: #9bbc0f;
-  border: 4px solid #0f380f;
-  border-radius: 8px;
-  padding: 6px;
-  position: relative;
-}
-
-.top-bar {
-  display: flex;
-  justify-content: space-between;
-  padding: 2px 6px;
-  color: #0f380f;
-  font-weight: bold;
-  font-size: 14px;
-  letter-spacing: 1px;
+  background:#9bbc0f;
+  border:4px solid #0f380f;
+  border-radius:8px;
+  padding:4px;
+  position:relative;
+  width:100%;
+  max-width:320px;
 }
 
 canvas {
-  display: block;
-  image-rendering: pixelated;
-  background: #9bbc0f;
+  display:block;
+  width:100%;
+  height:auto;
+  image-rendering:pixelated;
+  background:#9bbc0f;
+  border-radius:4px;
 }
 
 .overlay {
-  position: absolute;
-  top: 6px; left: 6px; right: 6px; bottom: 6px;
-  background: rgba(155, 188, 15, 0.95);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #0f380f;
-  text-align: center;
-  z-index: 10;
+  position:absolute;
+  inset:4px;
+  background:rgba(15,56,15,0.92);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:#9bbc0f;
+  text-align:center;
+  z-index:10;
+  border-radius:4px;
 }
-
-.overlay.hidden { display: none; }
-
-.overlay h1 {
-  font-size: 28px;
-  margin-bottom: 10px;
-  letter-spacing: 3px;
-}
-
-.overlay p {
-  font-size: 13px;
-  margin-bottom: 15px;
-}
-
+.overlay h1 { font-size:24px; letter-spacing:3px; margin-bottom:8px; }
+.overlay p { font-size:12px; margin-bottom:14px; color:#7a9a0f; }
 .overlay button {
-  background: #0f380f;
-  color: #9bbc0f;
-  border: none;
-  padding: 8px 20px;
-  font-family: inherit;
-  font-weight: bold;
-  font-size: 14px;
-  letter-spacing: 2px;
-  cursor: pointer;
-  border-radius: 4px;
+  background:#9bbc0f;
+  color:#0f380f;
+  border:none;
+  padding:10px 22px;
+  font-family:inherit;
+  font-weight:bold;
+  font-size:14px;
+  letter-spacing:2px;
+  border-radius:6px;
+  cursor:pointer;
 }
 
-.overlay button:active { transform: scale(0.95); }
-
-/* D-Pad */
+/* ===== D-Pad ===== */
 .controls {
-  margin-top: 15px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:5px;
 }
-
-.row {
-  display: flex;
-  gap: 5px;
-}
-
 .dpad {
-  width: 50px;
-  height: 50px;
-  background: #3a3a3a;
-  color: #9bbc0f;
-  border: 2px solid #555;
-  border-radius: 8px;
-  font-size: 18px;
-  cursor: pointer;
-  font-family: inherit;
-  user-select: none;
+  width:52px; height:52px;
+  background:#2a2a2a;
+  color:#9bbc0f;
+  border:2px solid #444;
+  border-radius:10px;
+  font-size:18px;
+  cursor:pointer;
+  font-family:inherit;
+  user-select:none;
 }
+.dpad:active { background:#9bbc0f; color:#0f380f; }
+.dpad.center { background:#1a1a1a; color:#9bbc0f; font-size:22px; }
 
-.dpad:active {
-  background: #9bbc0f;
-  color: #0f380f;
+/* ===== ডেভলপার ===== */
+.developer {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  background:#1a1a1a;
+  border:1px solid #333;
+  border-radius:12px;
+  padding:12px;
+  margin-top:10px;
 }
-
-.dpad.center {
-  background: #222;
-  color: #555;
-  cursor: default;
+.dev-photo {
+  width:56px; height:56px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid #9bbc0f;
+  box-shadow:0 0 12px #9bbc0f66;
 }
+.dev-info { flex:1; }
+.dev-name { font-size:14px; color:#9bbc0f; font-weight:bold; letter-spacing:1px; }
+.dev-role { font-size:11px; color:#6b8a0a; margin-top:2px; }
+.dev-msg { font-size:11px; color:#5a7a0a; margin-top:4px; }
 
-@media (hover: hover) and (pointer: fine) {
-  .controls { display: none; }
+@media (hover:hover) and (pointer:fine) {
+  .controls { display:none; }
 }
