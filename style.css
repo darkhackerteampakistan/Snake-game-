@@ -1,251 +1,329 @@
-* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+/* ========== বেস ========== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
 
 body {
-  background:#111;
-  font-family:'Courier New', monospace;
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  padding:15px;
-  color:#9bbc0f;
-  touch-action:manipulation;
+  background: #111;
+  font-family: 'Courier New', monospace;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 15px;
+  color: #9bbc0f;
+  touch-action: manipulation;
 }
 
 .app {
-  width:100%;
-  max-width:360px;
-  display:flex;
-  flex-direction:column;
-  gap:15px;
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
-.screen { 
-  display:flex; 
-  flex-direction:column; 
-  gap:12px; 
-  align-items:center; 
+.screen {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
 }
 
-/* ✅ সবচেয়ে গুরুত্বপূর্ণ লাইন */
-.hidden { display:none !important; }
+.hidden { display: none !important; }
 
-/* ===== মেনু ===== */
+/* ========== মেনু ========== */
 .logo {
-  font-size:48px;
-  letter-spacing:6px;
-  color:#9bbc0f;
-  text-shadow:0 0 20px #9bbc0f88;
-  margin-top:20px;
+  font-size: 48px;
+  letter-spacing: 6px;
+  color: #9bbc0f;
+  text-shadow: 0 0 20px #9bbc0f88;
+  margin-top: 20px;
 }
+
 .subtitle {
-  font-size:13px;
-  color:#6b8a0a;
-  letter-spacing:3px;
-  margin-bottom:20px;
+  font-size: 13px;
+  color: #6b8a0a;
+  letter-spacing: 3px;
+  margin-bottom: 20px;
 }
-.title { font-size:22px; letter-spacing:3px; margin:10px 0; }
+
+.title { font-size: 22px; letter-spacing: 3px; margin: 10px 0; }
 
 .menu-btn {
-  width:100%;
-  background:transparent;
-  border:2px solid #9bbc0f;
-  color:#9bbc0f;
-  padding:14px;
-  font-family:inherit;
-  font-size:16px;
-  letter-spacing:2px;
-  border-radius:8px;
-  cursor:pointer;
-  transition:all .15s;
-}
-.menu-btn:active { background:#9bbc0f; color:#0f380f; transform:scale(.97); }
-
-/* ===== কাস্টমাইজ ===== */
-.section {
-  width:100%;
-  background:#1a1a1a;
-  border:1px solid #333;
-  border-radius:8px;
-  padding:10px;
-}
-.section label {
-  display:block;
-  font-size:12px;
-  letter-spacing:2px;
-  color:#9bbc0f;
-  margin-bottom:8px;
-}
-.row { display:flex; flex-wrap:wrap; gap:6px; }
-
-.swatch {
-  width:34px; height:34px;
-  border-radius:6px;
-  border:2px solid #444;
-  cursor:pointer;
-  transition:transform .1s;
-}
-.swatch.active { border-color:#9bbc0f; transform:scale(1.1); box-shadow:0 0 10px #9bbc0f; }
-
-.chip {
-  background:#222;
-  color:#9bbc0f;
-  border:1px solid #444;
-  padding:6px 12px;
-  font-family:inherit;
-  font-size:12px;
-  letter-spacing:1px;
-  border-radius:6px;
-  cursor:pointer;
-}
-.chip.active { background:#9bbc0f; color:#0f380f; border-color:#9bbc0f; }
-
-/* ===== গেম ===== */
-.hud {
-  width:100%;
-  display:flex;
-  justify-content:space-between;
-  font-size:14px;
-  letter-spacing:2px;
-  padding:0 4px;
-}
-
-.screen-frame {
-  background:#9bbc0f;
-  border:4px solid #0f380f;
-  border-radius:8px;
-  padding:4px;
-  position:relative;
-  width:100%;
-  max-width:320px;
-}
-
-canvas {
-  display:block;
-  width:100%;
-  height:auto;
-  image-rendering:pixelated;
-  background:#9bbc0f;
-  border-radius:4px;
-}
-
-.overlay {
-  position:absolute;
-  inset:4px;
-  background:rgba(15,56,15,0.92);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  color:#9bbc0f;
-  text-align:center;
-  z-index:10;
-  border-radius:4px;
-}
-.overlay.hidden { display:none; }
-.overlay h1 { font-size:24px; letter-spacing:3px; margin-bottom:8px; }
-.overlay p { font-size:12px; margin-bottom:14px; color:#7a9a0f; }
-.overlay button {
-  background:#9bbc0f;
-  color:#0f380f;
-  border:none;
-  padding:10px 22px;
-  font-family:inherit;
-  font-weight:bold;
-  font-size:14px;
-  letter-spacing:2px;
-  border-radius:6px;
-  cursor:pointer;
-}
-
-/* ===== D-Pad ===== */
-.controls {
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:5px;
-}
-.dpad {
-  width:52px; height:52px;
-  background:#2a2a2a;
-  color:#9bbc0f;
-  border:2px solid #444;
-  border-radius:10px;
-  font-size:18px;
-  cursor:pointer;
-  font-family:inherit;
-  user-select:none;
-}
-.dpad:active { background:#9bbc0f; color:#0f380f; }
-.dpad.center { background:#1a1a1a; color:#9bbc0f; font-size:22px; }
-
-/* ===== ডেভলপার ===== */
-.developer {
-  display:flex;
-  align-items:center;
-  gap:12px;
-  background:#1a1a1a;
-  border:1px solid #333;
-  border-radius:12px;
-  padding:12px;
-  margin-top:10px;
-}
-.dev-photo {
-  width:56px; height:56px;
-  border-radius:50%;
-  object-fit:cover;
-  border:2px solid #9bbc0f;
-  box-shadow:0 0 12px #9bbc0f66;
-  flex-shrink:0;
-}
-.dev-info { flex:1; }
-.dev-name { font-size:14px; color:#9bbc0f; font-weight:bold; letter-spacing:1px; }
-.dev-role { font-size:11px; color:#6b8a0a; margin-top:2px; }
-.dev-msg { font-size:11px; color:#5a7a0a; margin-top:4px; }
-
-/* ===== ইনস্টল ব্যানার ===== */
-.install-banner {
-  position: fixed;
-  bottom: 15px;
-  left: 15px;
-  right: 15px;
-  background: #0f380f;
+  width: 100%;
+  background: transparent;
   border: 2px solid #9bbc0f;
-  border-radius: 12px;
-  padding: 12px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
   color: #9bbc0f;
-  font-size: 13px;
-  z-index: 1000;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.5);
-  animation: slideUp 0.3s ease;
+  padding: 14px;
+  font-family: inherit;
+  font-size: 16px;
+  letter-spacing: 2px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all .15s;
 }
-.install-banner.hidden { display: none; }
-.install-banner span { flex: 1; }
-.install-banner button {
+
+.menu-btn:active {
   background: #9bbc0f;
   color: #0f380f;
-  border: none;
+  transform: scale(.97);
+}
+
+/* ========== কাস্টমাইজ হেডার ========== */
+.custom-header {
+  text-align: center;
+  margin: 10px 0;
+}
+
+.custom-sub {
+  font-size: 12px;
+  color: #6b8a0a;
+  letter-spacing: 2px;
+  margin-top: 4px;
+}
+
+/* ========== সেকশন ========== */
+.section {
+  width: 100%;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.section label {
+  display: block;
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: #9bbc0f;
+  margin-bottom: 4px;
+  font-weight: bold;
+}
+
+.hint {
+  font-size: 11px;
+  color: #6b8a0a;
+  margin-bottom: 10px;
+  font-style: italic;
+}
+
+.row { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.swatch {
+  width: 38px;
+  height: 38px;
+  border-radius: 6px;
+  border: 2px solid #444;
+  cursor: pointer;
+  transition: transform .1s;
+}
+
+.swatch.active {
+  border-color: #9bbc0f;
+  transform: scale(1.1);
+  box-shadow: 0 0 10px #9bbc0f;
+}
+
+.chip {
+  background: #222;
+  color: #9bbc0f;
+  border: 1px solid #444;
   padding: 8px 14px;
   font-family: inherit;
-  font-weight: bold;
   font-size: 12px;
+  letter-spacing: 1px;
   border-radius: 6px;
   cursor: pointer;
 }
-.install-banner #closeInstall {
-  background: transparent;
-  color: #9bbc0f;
-  padding: 8px;
+
+.chip.active {
+  background: #9bbc0f;
+  color: #0f380f;
+  border-color: #9bbc0f;
+}
+
+/* ========== গেম ========== */
+.hud {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   font-size: 14px;
+  letter-spacing: 2px;
+  padding: 0 4px;
+  min-height: 24px;
 }
 
-@keyframes slideUp {
-  from { transform: translateY(100px); opacity: 0; }
-  to   { transform: translateY(0);     opacity: 1; }
+.status-text {
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: #ff6b6b;
+  font-weight: bold;
+  text-shadow: 0 0 10px #ff6b6b88;
+  animation: blink 1s infinite;
 }
 
-/* ডেস্কটপে D-Pad লুকাও */
-@media (hover:hover) and (pointer:fine) {
-  .controls { display:none; }
+.status-text.playing {
+  color: #9bbc0f;
+  text-shadow: 0 0 10px #9bbc0f88;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.screen-frame {
+  background: #9bbc0f;
+  border: 4px solid #0f380f;
+  border-radius: 8px;
+  padding: 4px;
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+  background: #9bbc0f;
+  border-radius: 4px;
+}
+
+/* ========== D-Pad ========== */
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.dpad {
+  width: 52px;
+  height: 52px;
+  background: #2a2a2a;
+  color: #9bbc0f;
+  border: 2px solid #444;
+  border-radius: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  font-family: inherit;
+  user-select: none;
+}
+
+.dpad:active {
+  background: #9bbc0f;
+  color: #0f380f;
+}
+
+.dpad.center {
+  background: #1a1a1a;
+  color: #9bbc0f;
+  font-size: 22px;
+}
+
+/* ========== কাস্টম PLAY বাটন ========== */
+.play-btn {
+  background: #9bbc0f !important;
+  color: #0f380f !important;
+  border-color: #9bbc0f !important;
+  font-weight: bold;
+  font-size: 16px !important;
+  padding: 16px !important;
+  margin-top: 5px;
+  box-shadow: 0 0 20px #9bbc0f55;
+}
+
+/* ========== SETTINGS বাটন ========== */
+.settings-btn {
+  width: 100%;
+  max-width: 320px;
+  background: transparent;
+  border: 2px solid #9bbc0f;
+  color: #9bbc0f;
+  padding: 12px;
+  font-family: inherit;
+  font-size: 14px;
+  letter-spacing: 2px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all .15s;
+  margin-top: 8px;
+}
+
+.settings-btn:active {
+  background: #9bbc0f;
+  color: #0f380f;
+}
+
+/* ========== ডেভলপার কার্ড ========== */
+.developer {
+  background: linear-gradient(135deg, #1a1a1a, #0f380f);
+  border: 2px solid #9bbc0f44;
+  border-radius: 14px;
+  padding: 14px;
+  margin-top: 15px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.dev-photo {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 3px solid #9bbc0f;
+  box-shadow: 0 0 15px #9bbc0f88;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.dev-info { flex: 1; }
+
+.dev-name {
+  font-size: 15px;
+  color: #9bbc0f;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  margin-bottom: 3px;
+}
+
+.dev-role {
+  font-size: 11px;
+  color: #a8c90f;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+}
+
+.dev-msg {
+  font-size: 11px;
+  color: #8aa80d;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.dev-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.dev-tags span {
+  background: #0f380f;
+  color: #9bbc0f;
+  font-size: 9px;
+  padding: 3px 8px;
+  border-radius: 10px;
+  border: 1px solid #9bbc0f44;
+  letter-spacing: 0.5px;
+}
+
+/* ========== ডেস্কটপে D-Pad লুকাও ========== */
+@media (hover: hover) and (pointer: fine) {
+  .controls { display: none; }
 }
