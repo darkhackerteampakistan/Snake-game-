@@ -323,6 +323,40 @@ canvas {
   letter-spacing: 0.5px;
 }
 
+/* ========== Install Button ========== */
+.install-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, #9bbc0f, #6b8a0a);
+  color: #0f380f;
+  border: 2px solid #0f380f;
+  padding: 12px 18px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  border-radius: 30px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px #9bbc0f88, 0 0 0 4px #9bbc0f22;
+  z-index: 9999;
+  animation: pulseInstall 2s infinite;
+  transition: transform .15s;
+}
+
+.install-btn:active {
+  transform: scale(0.95);
+}
+
+.install-btn.hidden {
+  display: none;
+}
+
+@keyframes pulseInstall {
+  0%, 100% { box-shadow: 0 4px 20px #9bbc0f88, 0 0 0 4px #9bbc0f22; }
+  50% { box-shadow: 0 4px 20px #9bbc0f88, 0 0 0 8px #9bbc0f44; }
+}
+
 /* ========== ডেস্কটপে D-Pad লুকাও ========== */
 @media (hover: hover) and (pointer: fine) {
   .controls { display: none; }
