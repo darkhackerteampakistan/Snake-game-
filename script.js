@@ -362,6 +362,7 @@ document.getElementById('howBtn').onclick = () => {
     "• তীর চিহ্ন (Arrow keys) বা WASD দিয়ে সাপ চালান\n" +
     "• মোবাইলে D-Pad বা Swipe ব্যবহার করুন\n" +
     "• মাঝখানে ক্লিক = Pause / Resume\n" +
+    "• গেম ওভার হলে মাঝখানে ক্লিক = নতুন গেম\n" +
     "• প্রতিটি খাবারে +১ পয়েন্ট\n" +
     "• দেয়াল বা নিজের গায়ে ধাক্কা = Game Over"
   );
@@ -385,6 +386,24 @@ document.getElementById('gameSettingsBtn').onclick = () => {
   showScreen('custom');
 };
 
+// ===== ✅ মাঝের বাটন — Pause / Resume / Restart সব কাজ =====
+document.getElementById('pauseCenter').addEventListener('click', () => {
+  // গেম ওভার → নতুন গেম
+  if (started && !alive) {
+    startGame();
+    return;
+  }
+  // গেম চলছে → pause/resume
+  if (started && alive) {
+    togglePause();
+    return;
+  }
+  // কিছুই শুরু না হলে → গেম শুরু
+  if (!started) {
+    startGame();
+  }
+});
+
 // ===== কন্ট্রোল =====
 function setDirection(d) {
   const dirs = {
@@ -404,7 +423,18 @@ document.addEventListener('keydown', e => {
     W:'up', S:'down', A:'left', D:'right'
   };
   if (map[e.key]) { e.preventDefault(); setDirection(map[e.key]); }
-  if (e.key === ' ') { e.preventDefault(); togglePause(); }
+  
+  // Space → Pause / Resume / Restart
+  if (e.key === ' ') {
+    e.preventDefault();
+    if (started && !alive) {
+      startGame();
+    } else if (started && alive) {
+      togglePause();
+    } else {
+      startGame();
+    }
+  }
 });
 
 document.querySelectorAll('.dpad[data-dir]').forEach(btn => {
@@ -413,10 +443,9 @@ document.querySelectorAll('.dpad[data-dir]').forEach(btn => {
   btn.addEventListener('mousedown', fire);
 });
 
-document.getElementById('pauseCenter').addEventListener('click', togglePause);
-
-// Swipe
+// ===== Canvas: Swipe + Tap (Restart) =====
 let ts = null;
+
 canvas.addEventListener('touchstart', e => {
   ts = {x:e.touches[0].clientX, y:e.touches[0].clientY};
 }, {passive:true});
@@ -425,17 +454,37 @@ canvas.addEventListener('touchend', e => {
   if (!ts) return;
   const t = e.changedTouches[0];
   const dx = t.clientX - ts.x, dy = t.clientY - ts.y;
-  if (Math.abs(dx)<20 && Math.abs(dy)<20) return;
+  
+  // ছোট tap → গেম ওভার থাকলে restart
+  if (Math.abs(dx)<20 && Math.abs(dy)<20) {
+    if (started && !alive) startGame();
+    ts = null;
+    return;
+  }
+  
+  // Swipe → direction
   if (Math.abs(dx) > Math.abs(dy)) setDirection(dx>0?'right':'left');
   else setDirection(dy>0?'down':'up');
   ts = null;
 }, {passive:true});
 
-// ===== ইনিশিয়ালাইজ =====
-loadConfig();
-resetGame();
-showScreen('menu');
+// ডেস্কটপে ক্লিক → গেম ওভার থাকলে restart
+canvas.addEventListener('click', () => {
+  if (started && !alive) startGame();
+});
 
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js').catch(()=>{});
-}
+// ===== PWA Install Button =====
+let deferredPrompt = null;
+const installBtn = document.getElementById('installBtn');
+
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  installBtn.classList.remove('hidden');
+  console.log('✅ ইনস্টল প্রম্পট তৈরি');
+});
+
+installBtn.addEventListener('click', async () => {
+  if (!deferredPrompt) {
+    alert(
+      "📲 ইনস্টল করার নিয়
