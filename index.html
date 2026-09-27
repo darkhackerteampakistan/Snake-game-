@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#9bbc0f">
+  <title>Snake - Nokia Style</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="phone">
+    <div class="screen-frame">
+      <div class="top-bar">
+        <span>Snake</span>
+        <span id="score">000</span>
+      </div>
+      <canvas id="game" width="240" height="240"></canvas>
+      <div id="overlay" class="overlay">
+        <div class="overlay-content">
+          <h1 id="overlay-title">SNAKE</h1>
+          <p id="overlay-text">Press SPACE or Tap to Start</p>
+          <button id="startBtn">START</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="dpad up" data-dir="up">▲</button>
+      <div class="row">
+        <button class="dpad left" data-dir="left">◀</button>
+        <button class="dpad center">●</button>
+        <button class="dpad right" data-dir="right">▶</button>
+      </div>
+      <button class="dpad down" data-dir="down">▼</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
