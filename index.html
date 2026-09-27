@@ -9,7 +9,6 @@
   <meta name="apple-mobile-web-app-title" content="Snake">
   <title>Snake Classic - Nokia Style</title>
 
-  <!-- ✅ RealFaviconGenerator এর Markup -->
   <link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96" />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="shortcut icon" href="favicon.ico" />
@@ -34,52 +33,54 @@
 
   <!-- ===== কাস্টমাইজ স্ক্রিন ===== -->
   <div id="customScreen" class="screen hidden">
-    <h2 class="title">CUSTOMIZE</h2>
+    <div class="custom-header">
+      <h2 class="title">⚙️ CUSTOMIZE</h2>
+      <p class="custom-sub">নিজের মতো সাজাও</p>
+    </div>
 
     <div class="section">
-      <label>Theme</label>
+      <label>🎨 ব্যাকগ্রাউন্ড থিম</label>
+      <p class="hint">গেমের রঙ বাছাই করো</p>
       <div class="row" id="themeRow"></div>
     </div>
 
     <div class="section">
-      <label>Snake Color</label>
+      <label>🐍 সাপের রঙ</label>
+      <p class="hint">তোমার সাপের রঙ</p>
       <div class="row" id="snakeColorRow"></div>
     </div>
 
     <div class="section">
-      <label>Food Color</label>
+      <label>🍎 খাবারের রঙ</label>
+      <p class="hint">খাবারের রঙ বাছাই করো</p>
       <div class="row" id="foodColorRow"></div>
     </div>
 
     <div class="section">
-      <label>Snake Style</label>
+      <label>📐 সাপের স্টাইল</label>
+      <p class="hint">সাপ কেমন দেখাবে</p>
       <div class="row" id="snakeStyleRow"></div>
     </div>
 
     <div class="section">
-      <label>Difficulty</label>
+      <label>⚡ কঠিনতা (Difficulty)</label>
+      <p class="hint">গেম কত দ্রুত হবে</p>
       <div class="row" id="diffRow"></div>
     </div>
 
-    <button class="menu-btn" id="backBtn">◀ BACK</button>
+    <button class="menu-btn play-btn" id="customPlayBtn">▶ PLAY NOW</button>
   </div>
 
   <!-- ===== গেম স্ক্রিন ===== -->
   <div id="gameScreen" class="screen hidden">
     <div class="hud">
       <span>SCORE: <b id="score">000</b></span>
+      <span id="statusText" class="status-text hidden"></span>
       <span>HI: <b id="hiscore">000</b></span>
     </div>
 
     <div class="screen-frame">
       <canvas id="game" width="300" height="300"></canvas>
-      <div id="overlay" class="overlay hidden">
-        <div class="overlay-content">
-          <h1 id="overlay-title">PAUSED</h1>
-          <p id="overlay-text">Tap middle to resume</p>
-          <button id="overlayBtn">RESUME</button>
-        </div>
-      </div>
     </div>
 
     <div class="controls">
@@ -91,68 +92,43 @@
       </div>
       <button class="dpad down" data-dir="down">▼</button>
     </div>
+
+    <button class="settings-btn" id="gameSettingsBtn">⚙️ SETTINGS</button>
   </div>
 
-  <!-- ===== ডেভলপার তথ্য ===== -->
+  <!-- ===== ডেভলপার কার্ড ===== -->
   <div class="developer">
-    <img src="dev.jpg" alt="Developer" class="dev-photo">
+    <img src="dev.jpg" alt="Molla Mohammad Rifat Osama" class="dev-photo">
     <div class="dev-info">
-      <p class="dev-name">তোমার নাম এখানে</p>
-      <p class="dev-role">Game Developer</p>
-      <p class="dev-msg">ধন্যবাদ খেলার জন্য! 🎮</p>
+      <p class="dev-name">Molla Mohammad Rifat Osama</p>
+      <p class="dev-role">🎮 Game Developer | PWA Designer</p>
+      <p class="dev-msg">
+        Nokia ক্লাসিক সাপের গেমটি আধুনিক ব্রাউজারে সম্পূর্ণ অফলাইন,
+        অ্যাপ-এর মতো ব্যবহারযোগ্য করে তৈরি করেছি। এটি HTML, CSS, JavaScript
+        এবং PWA টেকনোলজি দিয়ে বানানো। নতুন ফিচার ও গেম নিয়ে কাজ করছি।
+        ধন্যবাদ খেলার জন্য! ❤️
+      </p>
+      <div class="dev-tags">
+        <span>💻 HTML5</span>
+        <span>🎨 CSS3</span>
+        <span>⚡ JavaScript</span>
+        <span>📱 PWA</span>
+      </div>
     </div>
   </div>
 
 </div>
 
-<!-- ইনস্টল ব্যানার -->
-<div id="installBanner" class="install-banner hidden">
-  <span>📱 অ্যাপ হিসেবে ইনস্টল করো?</span>
-  <button id="installBtn">ইনস্টল</button>
-  <button id="closeInstall">✕</button>
-</div>
-
 <script src="script.js"></script>
 
 <script>
-  // === Service Worker ===
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('sw.js')
-        .then(reg => console.log('✅ Service Worker চালু:', reg.scope))
-        .catch(err => console.log('❌ SW রেজিস্ট্রেশন ব্যর্থ:', err));
+        .then(reg => console.log('✅ Service Worker:', reg.scope))
+        .catch(err => console.log('❌ SW error:', err));
     });
   }
-
-  // === ইনস্টল প্রম্পট ===
-  let deferredPrompt = null;
-  const banner = document.getElementById('installBanner');
-  const installBtn = document.getElementById('installBtn');
-  const closeBtn = document.getElementById('closeInstall');
-
-  window.addEventListener('beforeinstallprompt', e => {
-    e.preventDefault();
-    deferredPrompt = e;
-    banner.classList.remove('hidden');
-  });
-
-  installBtn.addEventListener('click', async () => {
-    if (!deferredPrompt) return;
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    console.log('ইনস্টল ফলাফল:', outcome);
-    deferredPrompt = null;
-    banner.classList.add('hidden');
-  });
-
-  closeBtn.addEventListener('click', () => {
-    banner.classList.add('hidden');
-  });
-
-  window.addEventListener('appinstalled', () => {
-    banner.classList.add('hidden');
-    console.log('✅ অ্যাপ ইনস্টল হয়েছে!');
-  });
 </script>
 
 </body>
