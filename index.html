@@ -3,24 +3,71 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#9bbc0f">
-  <title>Snake - Nokia Style</title>
+  <meta name="theme-color" content="#0f380f">
+  <title>Snake Classic - Nokia Style</title>
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="phone">
+
+<div class="app">
+
+  <!-- ===== মেনু স্ক্রিন ===== -->
+  <div id="menuScreen" class="screen">
+    <h1 class="logo">SNAKE</h1>
+    <p class="subtitle">Nokia Classic</p>
+
+    <button class="menu-btn" id="playBtn">▶ PLAY</button>
+    <button class="menu-btn" id="customBtn">🎨 CUSTOMIZE</button>
+    <button class="menu-btn" id="howBtn">❓ HOW TO PLAY</button>
+  </div>
+
+  <!-- ===== কাস্টমাইজ স্ক্রিন ===== -->
+  <div id="customScreen" class="screen hidden">
+    <h2 class="title">CUSTOMIZE</h2>
+
+    <div class="section">
+      <label>Theme</label>
+      <div class="row" id="themeRow"></div>
+    </div>
+
+    <div class="section">
+      <label>Snake Color</label>
+      <div class="row" id="snakeColorRow"></div>
+    </div>
+
+    <div class="section">
+      <label>Food Color</label>
+      <div class="row" id="foodColorRow"></div>
+    </div>
+
+    <div class="section">
+      <label>Snake Style</label>
+      <div class="row" id="snakeStyleRow"></div>
+    </div>
+
+    <div class="section">
+      <label>Difficulty</label>
+      <div class="row" id="diffRow"></div>
+    </div>
+
+    <button class="menu-btn" id="backBtn">◀ BACK</button>
+  </div>
+
+  <!-- ===== গেম স্ক্রিন ===== -->
+  <div id="gameScreen" class="screen hidden">
+    <div class="hud">
+      <span>SCORE: <b id="score">000</b></span>
+      <span>HI: <b id="hiscore">000</b></span>
+    </div>
+
     <div class="screen-frame">
-      <div class="top-bar">
-        <span>Snake</span>
-        <span id="score">000</span>
-      </div>
-      <canvas id="game" width="240" height="240"></canvas>
-      <div id="overlay" class="overlay">
+      <canvas id="game" width="300" height="300"></canvas>
+      <div id="overlay" class="overlay hidden">
         <div class="overlay-content">
-          <h1 id="overlay-title">SNAKE</h1>
-          <p id="overlay-text">Press SPACE or Tap to Start</p>
-          <button id="startBtn">START</button>
+          <h1 id="overlay-title">PAUSED</h1>
+          <p id="overlay-text">Tap middle to resume</p>
+          <button id="overlayBtn">RESUME</button>
         </div>
       </div>
     </div>
@@ -29,13 +76,25 @@
       <button class="dpad up" data-dir="up">▲</button>
       <div class="row">
         <button class="dpad left" data-dir="left">◀</button>
-        <button class="dpad center">●</button>
+        <button class="dpad center" id="pauseCenter">●</button>
         <button class="dpad right" data-dir="right">▶</button>
       </div>
       <button class="dpad down" data-dir="down">▼</button>
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <!-- ===== ডেভলপার তথ্য ===== -->
+  <div class="developer">
+    <img src="dev.jpg" alt="Developer" class="dev-photo">
+    <div class="dev-info">
+      <p class="dev-name">তোমার নাম এখানে</p>
+      <p class="dev-role">Game Developer</p>
+      <p class="dev-msg">ধন্যবাদ খেলার জন্য! 🎮</p>
+    </div>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
