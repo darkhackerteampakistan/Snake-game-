@@ -4,45 +4,108 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#9bbc0f">
-  <title>Snake Classic - Nokia Style</title>
-
-  <!-- ✅ RealFaviconGenerator এর Markup -->
-  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="shortcut icon" href="/favicon.ico" />
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-  <link rel="manifest" href="/site.webmanifest" />
-
-  <link rel="stylesheet" href="style.css">
-</head>
-  
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  
-  <!-- PWA মেটা ট্যাগ -->
-  <meta name="theme-color" content="#9bbc0f">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Snake">
-  
-  <!-- Manifest -->
-  <link rel="manifest" href="manifest.json">
-  
-  <!-- iOS এর জন্য আইকন -->
-  <link rel="apple-touch-icon" href="icon-192.png">
-  
-  <title>Snake Classic</title>
+  <title>Snake Classic - Nokia Style</title>
+
+  <!-- ✅ RealFaviconGenerator এর Markup -->
+  <link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="shortcut icon" href="favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
+
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 <div class="app">
-  <!-- তোর আগের সব স্ক্রিন এখানে থাকবে (মেনু, গেম, কাস্টমাইজ) -->
-  <!-- ...আগের কোড বসিয়ে দে... -->
+
+  <!-- ===== মেনু স্ক্রিন ===== -->
+  <div id="menuScreen" class="screen">
+    <h1 class="logo">SNAKE</h1>
+    <p class="subtitle">Nokia Classic</p>
+    <button class="menu-btn" id="playBtn">▶ PLAY</button>
+    <button class="menu-btn" id="customBtn">🎨 CUSTOMIZE</button>
+    <button class="menu-btn" id="howBtn">❓ HOW TO PLAY</button>
+  </div>
+
+  <!-- ===== কাস্টমাইজ স্ক্রিন ===== -->
+  <div id="customScreen" class="screen hidden">
+    <h2 class="title">CUSTOMIZE</h2>
+
+    <div class="section">
+      <label>Theme</label>
+      <div class="row" id="themeRow"></div>
+    </div>
+
+    <div class="section">
+      <label>Snake Color</label>
+      <div class="row" id="snakeColorRow"></div>
+    </div>
+
+    <div class="section">
+      <label>Food Color</label>
+      <div class="row" id="foodColorRow"></div>
+    </div>
+
+    <div class="section">
+      <label>Snake Style</label>
+      <div class="row" id="snakeStyleRow"></div>
+    </div>
+
+    <div class="section">
+      <label>Difficulty</label>
+      <div class="row" id="diffRow"></div>
+    </div>
+
+    <button class="menu-btn" id="backBtn">◀ BACK</button>
+  </div>
+
+  <!-- ===== গেম স্ক্রিন ===== -->
+  <div id="gameScreen" class="screen hidden">
+    <div class="hud">
+      <span>SCORE: <b id="score">000</b></span>
+      <span>HI: <b id="hiscore">000</b></span>
+    </div>
+
+    <div class="screen-frame">
+      <canvas id="game" width="300" height="300"></canvas>
+      <div id="overlay" class="overlay hidden">
+        <div class="overlay-content">
+          <h1 id="overlay-title">PAUSED</h1>
+          <p id="overlay-text">Tap middle to resume</p>
+          <button id="overlayBtn">RESUME</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="dpad up" data-dir="up">▲</button>
+      <div class="row">
+        <button class="dpad left" data-dir="left">◀</button>
+        <button class="dpad center" id="pauseCenter">●</button>
+        <button class="dpad right" data-dir="right">▶</button>
+      </div>
+      <button class="dpad down" data-dir="down">▼</button>
+    </div>
+  </div>
+
+  <!-- ===== ডেভলপার তথ্য ===== -->
+  <div class="developer">
+    <img src="dev.jpg" alt="Developer" class="dev-photo">
+    <div class="dev-info">
+      <p class="dev-name">তোমার নাম এখানে</p>
+      <p class="dev-role">Game Developer</p>
+      <p class="dev-msg">ধন্যবাদ খেলার জন্য! 🎮</p>
+    </div>
+  </div>
+
 </div>
 
-<!-- ইনস্টল বাটন (নিজে থেকে দেখাবে) -->
+<!-- ইনস্টল ব্যানার -->
 <div id="installBanner" class="install-banner hidden">
   <span>📱 অ্যাপ হিসেবে ইনস্টল করো?</span>
   <button id="installBtn">ইনস্টল</button>
@@ -51,8 +114,8 @@
 
 <script src="script.js"></script>
 
-<!-- Service Worker রেজিস্ট্রেশন -->
 <script>
+  // === Service Worker ===
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('sw.js')
@@ -86,7 +149,6 @@
     banner.classList.add('hidden');
   });
 
-  // ইনস্টল হয়ে গেলে ব্যানার লুকাও
   window.addEventListener('appinstalled', () => {
     banner.classList.add('hidden');
     console.log('✅ অ্যাপ ইনস্টল হয়েছে!');
