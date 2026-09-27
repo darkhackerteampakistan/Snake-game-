@@ -1,33 +1,29 @@
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 
-// ===== উপাদান =====
+// ===== এলিমেন্ট =====
 const menuScreen = document.getElementById('menuScreen');
 const customScreen = document.getElementById('customScreen');
 const gameScreen = document.getElementById('gameScreen');
-const overlay = document.getElementById('overlay');
-const overlayTitle = document.getElementById('overlay-title');
-const overlayText = document.getElementById('overlay-text');
-const overlayBtn = document.getElementById('overlayBtn');
 const scoreEl = document.getElementById('score');
 const hiscoreEl = document.getElementById('hiscore');
+const statusText = document.getElementById('statusText');
 
 // ===== সেটিংস =====
 const CELL = 15;
 const COLS = canvas.width / CELL;
 const ROWS = canvas.height / CELL;
 
-// ===== Theme Presets =====
+// ===== থিম =====
 const THEMES = {
-  nokia:   { bg:'#9bbc0f', grid:'#8aa80d', text:'#0f380f' },
-  dark:    { bg:'#1a1a1a', grid:'#252525', text:'#9bbc0f' },
-  ocean:   { bg:'#0f2a4a', grid:'#1a3a5a', text:'#7ec8ff' },
-  sunset:  { bg:'#4a1a2a', grid:'#5a2535', text:'#ffb088' },
-  forest:  { bg:'#1a3a1a', grid:'#254a25', text:'#a0e060' },
-  purple:  { bg:'#2a1a4a', grid:'#3a2a5a', text:'#c8a0ff' }
+  nokia:  { bg:'#9bbc0f', grid:'#8aa80d', text:'#0f380f' },
+  dark:   { bg:'#1a1a1a', grid:'#252525', text:'#9bbc0f' },
+  ocean:  { bg:'#0f2a4a', grid:'#1a3a5a', text:'#7ec8ff' },
+  sunset: { bg:'#4a1a2a', grid:'#5a2535', text:'#ffb088' },
+  forest: { bg:'#1a3a1a', grid:'#254a25', text:'#a0e060' },
+  purple: { bg:'#2a1a4a', grid:'#3a2a5a', text:'#c8a0ff' }
 };
 
-// ===== Snake Colors =====
 const SNAKE_COLORS = [
   { head:'#0f380f', body:'#306230', name:'Classic' },
   { head:'#000000', body:'#444444', name:'Black'   },
@@ -42,9 +38,9 @@ const SNAKE_COLORS = [
 const FOOD_COLORS = ['#0f380f','#dc143c','#FFD700','#4169E1','#FF69B4','#00CED1'];
 
 const SNAKE_STYLES = [
-  { id:'block',  name:'Block'  },
-  { id:'round',  name:'Round'  },
-  { id:'small',  name:'Small'  }
+  { id:'block', name:'Block' },
+  { id:'round', name:'Round' },
+  { id:'small', name:'Small' }
 ];
 
 const DIFFICULTIES = {
@@ -65,7 +61,7 @@ let config = {
 let snake, dir, nextDir, food, score, alive, paused, started;
 let tickInterval, lastTick, animationId;
 
-// ===== সাউন্ড (Web Audio API) =====
+// ===== সাউন্ড =====
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
 function playSound(freq, duration, type = 'square', volume = 0.08) {
@@ -104,17 +100,20 @@ function loadConfig() {
     if (saved) config = { ...config, ...JSON.parse(saved) };
   } catch(e) {}
 }
+
 function saveConfig() {
   localStorage.setItem('snakeConfig', JSON.stringify(config));
 }
+
 function getHiScore() {
   return parseInt(localStorage.getItem('snakeHi_' + config.difficulty) || '0');
 }
+
 function setHiScore(v) {
   localStorage.setItem('snakeHi_' + config.difficulty, v);
 }
 
-// ===== কাস্টমাইজ UI বানানো =====
+// ===== কাস্টমাইজ UI =====
 function buildCustomUI() {
   // Theme
   const themeRow = document.getElementById('themeRow');
@@ -263,7 +262,7 @@ function tick() {
   snake.unshift(head);
 
   if (head.x===food.x && head.y===food.y) {
-    score += 1;             // ✅ প্রতি খাবারে ১ পয়েন্ট
+    score += 1;
     updateScore();
     eatSound();
     placeFood();
@@ -277,23 +276,26 @@ function gameOver() {
   gameOverSound();
   if (score > getHiScore()) setHiScore(score);
 
-  overlayTitle.textContent = 'GAME OVER';
-  overlayText.textContent = `Score: ${score}`;
-  overlayBtn.textContent = 'RETRY';
-  overlay.classList.remove('hidden');
+  statusText.textContent = 'GAME OVER';
+  statusText.className = 'status-text';
+  statusText.classList.remove('hidden');
 }
 
 function togglePause() {
   if (!started || !alive) return;
   paused = !paused;
   clickSound();
+  
   if (paused) {
-    overlayTitle.textContent = 'PAUSED';
-    overlayText.textContent = 'Tap middle to resume';
-    overlayBtn.textContent = 'RESUME';
-    overlay.classList.remove('hidden');
+    statusText.textContent = 'GAME PAUSED';
+    statusText.className = 'status-text';
+    statusText.classList.remove('hidden');
   } else {
-    overlay.classList.add('hidden');
+    statusText.textContent = 'PLAYING';
+    statusText.className = 'status-text playing';
+    setTimeout(() => {
+      statusText.classList.add('hidden');
+    }, 1500);
     lastTick = performance.now();
   }
 }
@@ -313,11 +315,19 @@ function loop(ts) {
 
 function startGame() {
   resetGame();
-  overlay.classList.add('hidden');
   started = true;
   paused = false;
   tickInterval = DIFFICULTIES[config.difficulty].speed;
   lastTick = performance.now();
+  
+  statusText.textContent = 'GAME STARTING...';
+  statusText.className = 'status-text playing';
+  statusText.classList.remove('hidden');
+  
+  setTimeout(() => {
+    statusText.classList.add('hidden');
+  }, 1500);
+  
   if (!animationId) animationId = requestAnimationFrame(loop);
 }
 
@@ -326,21 +336,25 @@ function showScreen(name) {
   menuScreen.classList.add('hidden');
   customScreen.classList.add('hidden');
   gameScreen.classList.add('hidden');
+  
   if (name === 'menu') menuScreen.classList.remove('hidden');
   if (name === 'custom') customScreen.classList.remove('hidden');
   if (name === 'game') gameScreen.classList.remove('hidden');
 }
 
+// ===== বাটন হ্যান্ডলার =====
 document.getElementById('playBtn').onclick = () => {
   clickSound();
   showScreen('game');
   startGame();
 };
+
 document.getElementById('customBtn').onclick = () => {
   clickSound();
   buildCustomUI();
   showScreen('custom');
 };
+
 document.getElementById('howBtn').onclick = () => {
   clickSound();
   alert(
@@ -352,9 +366,23 @@ document.getElementById('howBtn').onclick = () => {
     "• দেয়াল বা নিজের গায়ে ধাক্কা = Game Over"
   );
 };
-document.getElementById('backBtn').onclick = () => {
+
+document.getElementById('customPlayBtn').onclick = () => {
   clickSound();
-  showScreen('menu');
+  showScreen('game');
+  startGame();
+};
+
+document.getElementById('gameSettingsBtn').onclick = () => {
+  clickSound();
+  if (started && alive) {
+    paused = true;
+    statusText.textContent = 'GAME PAUSED';
+    statusText.className = 'status-text';
+    statusText.classList.remove('hidden');
+  }
+  buildCustomUI();
+  showScreen('custom');
 };
 
 // ===== কন্ট্রোল =====
@@ -387,16 +415,12 @@ document.querySelectorAll('.dpad[data-dir]').forEach(btn => {
 
 document.getElementById('pauseCenter').addEventListener('click', togglePause);
 
-overlayBtn.addEventListener('click', () => {
-  if (paused) { togglePause(); }
-  else { startGame(); }
-});
-
 // Swipe
 let ts = null;
 canvas.addEventListener('touchstart', e => {
   ts = {x:e.touches[0].clientX, y:e.touches[0].clientY};
 }, {passive:true});
+
 canvas.addEventListener('touchend', e => {
   if (!ts) return;
   const t = e.changedTouches[0];
