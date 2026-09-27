@@ -1,4 +1,4 @@
-const CACHE_NAME = 'snake-v5';
+const CACHE_NAME = 'snake-v6';
 
 const ASSETS = [
   './',
@@ -14,7 +14,7 @@ const ASSETS = [
   './web-app-manifest-512x512.png'
 ];
 
-// ===== ইনস্টল ইভেন্ট =====
+// ===== ইনস্টল =====
 self.addEventListener('install', event => {
   console.log('📦 Service Worker installing...');
   event.waitUntil(
@@ -28,7 +28,7 @@ self.addEventListener('install', event => {
   self.skipWaiting();
 });
 
-// ===== অ্যাক্টিভেট ইভেন্ট =====
+// ===== অ্যাক্টিভেট =====
 self.addEventListener('activate', event => {
   console.log('✅ Service Worker activated');
   event.waitUntil(
@@ -44,16 +44,13 @@ self.addEventListener('activate', event => {
   self.clients.claim();
 });
 
-// ===== ফেচ ইভেন্ট — অফলাইনের মূল ভিত্তি =====
+// ===== ফেচ =====
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request).then(cached => {
-      // ক্যাশে থাকলে → সেটা দাও
       if (cached) return cached;
       
-      // না থাকলে → নেটওয়ার্ক থেকে আনো
       return fetch(event.request).then(response => {
-        // যদি রেসপন্স ভ্যালিড হয় → ক্যাশে কপি রাখো
         if (response && response.status === 200 && response.type === 'basic') {
           const responseClone = response.clone();
           caches.open(CACHE_NAME).then(cache => {
@@ -62,7 +59,6 @@ self.addEventListener('fetch', event => {
         }
         return response;
       }).catch(() => {
-        // অফলাইন এবং ক্যাশে নেই → index.html দাও
         return caches.match('./index.html');
       });
     })
